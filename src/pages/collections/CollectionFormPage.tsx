@@ -62,7 +62,7 @@ export default function CollectionFormPage() {
               <option value="">Select Loan</option>
               {loans.map((loan) => (
                 <option key={loan.id} value={loan.id}>
-                  {loan.loan_no} - {loan.customer_name}
+                  {loan.loan_no} - {loan.customer.name}
                 </option>
               ))}
             </select>

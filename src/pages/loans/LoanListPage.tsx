@@ -78,7 +78,7 @@ export default function LoanListPage() {
             {loans.map((loan) => (
               <tr key={loan.id} className="border-t">
                 <td className="px-4 py-3">{loan.loan_no}</td>
-                <td className="px-4 py-3">{loan.customer_name}</td>
+                <td className="px-4 py-3">{loan.customer.name}</td>
                 <td className="px-4 py-3">₹{loan.emi_amount}</td>
                 <td className="px-4 py-3">₹{loan.total_amount}</td>
                 <td className="px-4 py-3">₹{loan.pending_amount}</td>

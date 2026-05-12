@@ -9,8 +9,14 @@ import LoanListPage from '../pages/loans/LoanListPage';
 import LoanFormPage from '../pages/loans/LoanFormPage';
 import CollectionListPage from '../pages/collections/CollectionListPage';
 import CollectionFormPage from '../pages/collections/CollectionFormPage';
+import UserListPage from '../pages/users/UserListPage';
+import UserFormPage from '../pages/users/UserFormPage';
+import { useAuth } from '../hooks/useAuth';
 
 export default function AppRoutes() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
+
   return (
     <BrowserRouter>
       <Routes>
@@ -19,6 +25,14 @@ export default function AppRoutes() {
         <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
             <Route path="/dashboard" element={<DashboardPage />} />
+
+            {isAdmin && (
+            <>
+              <Route path="/users" element={<UserListPage />} />
+              <Route path="/users/create" element={<UserFormPage />} />
+              <Route path="/users/:id/edit" element={<UserFormPage />} />
+            </>
+            )}
 
             <Route path="/customers" element={<CustomerListPage />} />
             <Route path="/customers/create" element={<CustomerFormPage />} />

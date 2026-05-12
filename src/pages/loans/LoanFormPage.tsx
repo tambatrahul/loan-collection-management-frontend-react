@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getCustomers } from "../../api/customer.api";
 import { createLoan, getLoan, updateLoan } from "../../api/loan.api";
 import { loanSchema, type LoanFormValues } from "../../schemas/loan.schema";
-import type { Customer } from "../../types/customer";
+import type { LoanCustomer } from "../../types/customer";
 import { z } from 'zod';
 
 export default function LoanFormPage() {
@@ -13,7 +13,7 @@ export default function LoanFormPage() {
   const { id } = useParams();
   const isEditMode = Boolean(id);
 
-  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [customers, setCustomers] = useState<LoanCustomer[]>([]);
 
   type LoanFormInput = z.input<typeof loanSchema>;
   type LoanFormOutput = z.output<typeof loanSchema>;
@@ -26,7 +26,6 @@ export default function LoanFormPage() {
   } = useForm<LoanFormInput, unknown, LoanFormOutput>({
     resolver: zodResolver(loanSchema),
     defaultValues: {
-      loan_no: "",
       customer_id: 0,
       emi_amount: 0,
       total_amount: 0,
@@ -43,8 +42,7 @@ export default function LoanFormPage() {
         const loan = await getLoan(Number(id));
 
         reset({
-          loan_no: loan.loan_no,
-          customer_id: loan.customer_id,
+          customer_id: loan.customer.id,
           emi_amount: loan.emi_amount,
           total_amount: loan.total_amount,
         });
@@ -72,21 +70,6 @@ export default function LoanFormPage() {
         </h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
-            <label className="mb-1 block text-sm font-medium">
-              Loan Number
-            </label>
-            <input
-              {...register("loan_no")}
-              className="w-full rounded border px-3 py-2"
-            />
-            {errors.loan_no && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.loan_no.message}
-              </p>
-            )}
-          </div>
-
           <div>
             <label className="mb-1 block text-sm font-medium">Customer</label>
             <select

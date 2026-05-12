@@ -1,7 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 
 const menuItems = [
   { label: 'Dashboard', path: '/dashboard' },
+  { label: 'Users', path: '/users', roles: ['admin'] },
   { label: 'Customers', path: '/customers' },
   { label: 'Loans', path: '/loans' },
   { label: 'Collections', path: '/collections' },
@@ -9,13 +11,22 @@ const menuItems = [
 
 export default function Sidebar() {
   const location = useLocation();
+  const { user } = useAuth();
+
+  const filteredMenuItems = menuItems.filter((item) => {
+    if (!item.roles) {
+      return true;
+    }
+
+    return item.roles.includes(user?.role ?? '');
+  });
 
   return (
-    <aside className="w-64 min-h-screen bg-slate-900 text-white p-4">
-      <h1 className="text-xl font-bold mb-8">Loan Collection</h1>
+    <aside className="min-h-screen w-64 bg-slate-900 p-4 text-white">
+      <h1 className="mb-8 text-xl font-bold">Loan Collection</h1>
 
       <nav className="space-y-2">
-        {menuItems.map((item) => {
+        {filteredMenuItems.map((item) => {
           const active = location.pathname.startsWith(item.path);
 
           return (
@@ -23,7 +34,9 @@ export default function Sidebar() {
               key={item.path}
               to={item.path}
               className={`block rounded px-3 py-2 ${
-                active ? 'bg-slate-700' : 'hover:bg-slate-800'
+                active
+                  ? 'bg-slate-700'
+                  : 'hover:bg-slate-800'
               }`}
             >
               {item.label}

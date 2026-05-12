@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
-import { getAgents, type Agent } from "../../api/user.api";
+import { getUsers } from "../../api/user.api";
 import {
   customerSchema,
   type CustomerFormInput,
@@ -13,11 +13,12 @@ import {
   getCustomer,
   updateCustomer,
 } from "../../api/customer.api";
+import type { User } from "../../types/auth";
 
 export default function CustomerFormPage() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [agents, setAgents] = useState<Agent[]>([]);
+  const [agents, setAgents] = useState<User[]>([]);
 
   const isEditMode = Boolean(id);
 
@@ -37,24 +38,29 @@ export default function CustomerFormPage() {
   });
 
   useEffect(() => {
-    async function loadData() {
-      const agentList = await getAgents();
-      setAgents(agentList);
+  async function loadData() {
+    const userResponse = await getUsers();
 
-      if (isEditMode) {
-        const customer = await getCustomer(Number(id));
+    setAgents(
+      userResponse.data.filter(
+        (user: User) => user.role === 'agent'
+      )
+    );
 
-        reset({
-          name: customer.name,
-          mobile: customer.mobile,
-          address: customer.address,
-          assigned_to: customer.assigned_to,
-        });
-      }
+    if (isEditMode) {
+      const customer = await getCustomer(Number(id));
+
+      reset({
+        name: customer.name,
+        mobile: customer.mobile,
+        address: customer.address,
+        assigned_to: customer.assigned_to,
+      });
     }
+  }
 
-    loadData();
-  }, [id, isEditMode, reset]);
+  void loadData();
+}, [id, isEditMode, reset]);
 
   async function onSubmit(values: CustomerFormValues) {
     if (isEditMode) {

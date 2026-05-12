@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 export const loanSchema = z.object({
-  loan_no: z.string().min(1, 'Loan number is required.'),
   customer_id: z.coerce
     .number()
     .min(1, 'Customer is required.'),

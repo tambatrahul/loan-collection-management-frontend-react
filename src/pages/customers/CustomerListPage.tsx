@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { deleteCustomer, getCustomers } from '../../api/customer.api';
 import { useAuth } from '../../hooks/useAuth';
-import type { Customer } from '../../types/customer';
+import type { LoanCustomer } from '../../types/customer';
 
 export default function CustomerListPage() {
   const { user } = useAuth();
 
-  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [customers, setCustomers] = useState<LoanCustomer[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);

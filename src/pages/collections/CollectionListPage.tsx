@@ -59,9 +59,9 @@ export default function CollectionListPage() {
           <tbody>
             {collections.map((collection) => (
               <tr key={collection.id} className="border-t">
-                <td className="px-4 py-3">{collection.loan_no}</td>
+                <td className="px-4 py-3">{collection.loan.loan_no}</td>
                 <td className="px-4 py-3">
-                  {collection.customer_name}
+                  {collection.loan.customer_name}
                 </td>
                 <td className="px-4 py-3">
                   ₹{collection.amount_paid}
