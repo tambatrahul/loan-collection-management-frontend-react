@@ -67,6 +67,7 @@ export default function LoanListPage() {
               <th className="px-4 py-3 text-left">Customer</th>
               <th className="px-4 py-3 text-left">EMI</th>
               <th className="px-4 py-3 text-left">Total</th>
+              <th className="px-4 py-3 text-left">Paid</th>
               <th className="px-4 py-3 text-left">Pending</th>
               {user?.role === 'admin' && (
               <th className="px-4 py-3 text-left">Actions</th>
@@ -81,6 +82,11 @@ export default function LoanListPage() {
                 <td className="px-4 py-3">{loan.customer.name}</td>
                 <td className="px-4 py-3">₹{loan.emi_amount}</td>
                 <td className="px-4 py-3">₹{loan.total_amount}</td>
+                <td className="px-4 py-3">
+                  ₹{(
+                    Number(loan.total_amount) - Number(loan.pending_amount)
+                  ).toFixed(2)}
+                </td>
                 <td className="px-4 py-3">₹{loan.pending_amount}</td>
                 {user?.role === 'admin' && (
                 <td className="px-4 py-3 space-x-2">

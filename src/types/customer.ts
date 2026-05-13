@@ -3,6 +3,8 @@ export interface LoanCustomer {
   name: string;
   mobile: string;
   address: string;
+  assigned_to: number | null;
+  assigned_agent_name: string | null;
 }
 
 export interface Loan {

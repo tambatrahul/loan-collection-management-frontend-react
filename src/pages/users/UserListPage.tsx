@@ -5,10 +5,17 @@ import type { User } from '../../types/user';
 
 export default function UserListPage() {
   const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   async function fetchUsers() {
-    const response = await getUsers();
-    setUsers(response.data);
+    try {
+      setLoading(true);
+
+      const response = await getUsers();
+      setUsers(response.data);
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleDelete(id: number) {
@@ -21,11 +28,7 @@ export default function UserListPage() {
   }
 
   useEffect(() => {
-    async function loadUsers() {
-      await fetchUsers();
-    }
-
-    void loadUsers();
+    void fetchUsers();
   }, []);
 
   return (
@@ -53,32 +56,16 @@ export default function UserListPage() {
           </thead>
 
           <tbody>
-            {users.map((user) => (
-              <tr key={user.id} className="border-b">
-                <td className="px-4 py-3">{user.name}</td>
-                <td className="px-4 py-3">{user.email}</td>
-                <td className="px-4 py-3 capitalize">
-                  {user.role}
-                </td>
-                <td className="space-x-2 px-4 py-3">
-                  <Link
-                    to={`/users/${user.id}/edit`}
-                    className="text-blue-600"
-                  >
-                    Edit
-                  </Link>
-
-                  <button
-                    onClick={() => handleDelete(user.id)}
-                    className="text-red-600"
-                  >
-                    Delete
-                  </button>
+            {loading ? (
+              <tr>
+                <td
+                  colSpan={4}
+                  className="px-4 py-6 text-center text-gray-500"
+                >
+                  Loading users...
                 </td>
               </tr>
-            ))}
-
-            {users.length === 0 && (
+            ) : users.length === 0 ? (
               <tr>
                 <td
                   colSpan={4}
@@ -87,6 +74,31 @@ export default function UserListPage() {
                   No users found.
                 </td>
               </tr>
+            ) : (
+              users.map((user) => (
+                <tr key={user.id} className="border-b">
+                  <td className="px-4 py-3">{user.name}</td>
+                  <td className="px-4 py-3">{user.email}</td>
+                  <td className="px-4 py-3 capitalize">
+                    {user.role}
+                  </td>
+                  <td className="space-x-2 px-4 py-3">
+                    <Link
+                      to={`/users/${user.id}/edit`}
+                      className="text-blue-600"
+                    >
+                      Edit
+                    </Link>
+
+                    <button
+                      onClick={() => handleDelete(user.id)}
+                      className="text-red-600"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
             )}
           </tbody>
         </table>

@@ -66,6 +66,7 @@ export default function CustomerListPage() {
               <th className="px-4 py-3 text-left">Name</th>
               <th className="px-4 py-3 text-left">Mobile</th>
               <th className="px-4 py-3 text-left">Address</th>
+              <th className="px-4 py-3 text-left">Agent</th>
               {user?.role === 'admin' && (
               <th className="px-4 py-3 text-left">Actions</th>
               )}
@@ -78,6 +79,7 @@ export default function CustomerListPage() {
                 <td className="px-4 py-3">{customer.name}</td>
                 <td className="px-4 py-3">{customer.mobile}</td>
                 <td className="px-4 py-3">{customer.address}</td>
+                <td className="px-4 py-3">{customer.assigned_agent_name}</td>
                 {user?.role === 'admin' && (
                 <td className="px-4 py-3 space-x-2">
                   <Link

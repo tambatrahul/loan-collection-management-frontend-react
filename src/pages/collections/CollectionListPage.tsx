@@ -50,6 +50,7 @@ export default function CollectionListPage() {
               <th className="px-4 py-3 text-left">Loan No</th>
               <th className="px-4 py-3 text-left">Customer</th>
               <th className="px-4 py-3 text-left">Amount</th>
+              <th className="px-4 py-3 text-left">Agent</th>
               <th className="px-4 py-3 text-left">Payment Mode</th>
               <th className="px-4 py-3 text-left">Date</th>
               <th className="px-4 py-3 text-left">Location</th>
@@ -65,6 +66,9 @@ export default function CollectionListPage() {
                 </td>
                 <td className="px-4 py-3">
                   ₹{collection.amount_paid}
+                </td>
+                <td className="px-4 py-3">
+                  {collection.collector.name}
                 </td>
                 <td className="px-4 py-3 uppercase">
                   {collection.payment_mode}
